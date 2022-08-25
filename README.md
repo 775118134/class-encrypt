@@ -81,7 +81,7 @@
 	</build>
 ```
 
-在项目打包时直接输出 `XXX-class-encrypts.jar`和`rt.jar` ;`XXX-class-encrypts.jar`为已加密jar包，将`rt.jar` 覆盖`jre\lib`下即可（目前仅支持jdk1.8）。（亦可通过配置修改`<encryptMode>agent</encryptMode>`为`-javaagent`模式）
+在项目打包时直接输出 `XXX-class-encrypts.jar`和`rt.jar` ;`XXX-class-encrypts.jar`为已加密jar包，将`rt.jar` 覆盖`jre\lib`下即可（目前支持jdk1.8）。（亦可通过配置修改`<encryptMode>agent</encryptMode>`为`-javaagent`模式）
 
 
 
