@@ -87,7 +87,7 @@
 
 个人感觉前端(`ast`)和java 对于混淆（合并、压缩）、加密都是防君子不防小人；
 
-打个广告：本人有偿承接 java 或 前端 加解密 任务![img](file:///assets/01395BBA.png)
+打个广告：本人有偿承接 java 或 前端 加解密 任务![img](file://assets/01395BBA.png)
 
 
 
