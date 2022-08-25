@@ -1,0 +1,65 @@
+package com.ssh.instrument;
+
+import java.lang.instrument.Instrumentation;
+import java.security.SecureRandom;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+
+public class PremainClass {
+
+	static {
+		System.out.println("......................PremainClass init");
+	}
+
+	private static final Cipher cipher = init();
+
+	private static Cipher init() {
+		try {
+			// SecureRandom sr = new SecureRandom();
+			String algorithm = "DES";
+			// KeyGenerator kg = KeyGenerator.getInstance(algorithm);
+			// kg.init(sr);
+			// SecretKey key = kg.generateKey();
+
+			// 生成密匙
+			SecureRandom sr = new SecureRandom();
+			// byte rawKey[] =
+			// Util.readFile("C:/Users/Thinkpad/Desktop/javaagent/key.data");
+			byte rawKey[] = "95880288".getBytes();
+			DESKeySpec dks = new DESKeySpec(rawKey);
+			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);
+			SecretKey key = keyFactory.generateSecret(dks);
+			Cipher cipher = Cipher.getInstance(algorithm);
+			cipher.init(Cipher.DECRYPT_MODE, key, sr);
+			return cipher;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		return null;
+	}
+
+	public static void premain(String agentArgs, Instrumentation instrumentation) {
+		instrumentation.addTransformer((loader, className, classBeingRedefined, protectionDomain, classfileBuffer) -> {
+			byte decryptedClassData[];
+			System.out.println("================ init: " + className + " ;class.length: " + classfileBuffer.length);
+			try {
+				decryptedClassData = cipher.doFinal(classfileBuffer);
+				System.out.println(" decrypted");
+			} catch (Exception e) {
+				decryptedClassData = classfileBuffer;
+				System.out.println(" not decrypted");
+			}
+			return decryptedClassData;
+		});
+	}
+
+	public static void main(String[] args) {
+		PremainClass p = new PremainClass();
+		System.out.println(p);
+
+	}
+}
